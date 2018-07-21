@@ -9,6 +9,7 @@ import axios from "axios";
 const key = "2348a18e4c3248abab1d460740881ee1";
 const sources = `https://newsapi.org/v2/sources?apiKey=${key}`;
 const dariSemantic = "https://react.semantic-ui.com";
+const iconLocator = "https://icon-locator.herokuapp.com/icon?size=70..120..200";
 
 class SourceList extends React.Component {
   constructor(props) {
@@ -61,9 +62,11 @@ class SourceList extends React.Component {
         {data.map(source => {
           return (
             <Card key={source.id}>
-              <Image src={`${dariSemantic}/images/avatar/large/matthew.png`} />
+              <Image src={`${iconLocator}&url=${source.url}`} />
               <Card.Content>
-                <Card.Header>{source.name}</Card.Header>
+                <Card.Header>
+                  {source.name} {source.description}"
+                </Card.Header>
               </Card.Content>
             </Card>
           );
