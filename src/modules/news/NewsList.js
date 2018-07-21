@@ -1,16 +1,22 @@
-// bikin static komponen nya
-// panggil via api
-// yang mau di tampilkan adalah sumber berita
+// list berita top headline dari indonesia
+// https://newsapi.org/v2/top-headlines?country=id&apiKey=API_KEY
+// bikin komponen kayak sourcelist tadi
+// yang di tampilkan
+// 1. title
+// 2. publishedAt
+// 3. description
+// 4. author
+
 import React from "react";
 import { Card, Icon, Image, Segment, Dimmer, Loader } from "semantic-ui-react";
 import axios from "axios";
 
 const key = "2348a18e4c3248abab1d460740881ee1";
-const sources = `https://newsapi.org/v2/sources?apiKey=${key}`;
+const sources = `https://newsapi.org/v2/top-headlines?country=id&apiKey=${key}`;
 const dariSemantic = "https://react.semantic-ui.com";
 const iconLocator = "https://icon-locator.herokuapp.com/icon?size=70..120..200";
 
-class SourceList extends React.Component {
+class NewsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +32,7 @@ class SourceList extends React.Component {
       .then(result => {
         console.log(result, "ini sukses");
         this.setState({
-          data: result.data.sources,
+          data: result.data.articles,
           loading: false
         });
       })
@@ -58,12 +64,28 @@ class SourceList extends React.Component {
 
     return (
       <Card.Group>
-        {data.map(source => {
+        {data.map((article, index) => {
           return (
-            <Card key={source.id}>
-              <Image size="small" src={`${iconLocator}&url=${source.url}`} />
+            <Card key={index}>
+              <Image
+                src={
+                  article.urlToImage
+                    ? article.urlToImage
+                    : `${dariSemantic}/images/avatar/large/matthew.png`
+                }
+              />
               <Card.Content>
-                <Card.Header>{source.name}"</Card.Header>
+                <Card.Header>{article.title}</Card.Header>
+                <Card.Meta>
+                  <span className="date">{article.publishedAt}</span>
+                </Card.Meta>
+                <Card.Description>{article.description}</Card.Description>
+              </Card.Content>
+              <Card.Content extra>
+                <a>
+                  <Icon name="user" />
+                  22 Friends
+                </a>
               </Card.Content>
             </Card>
           );
@@ -73,4 +95,4 @@ class SourceList extends React.Component {
   }
 }
 
-export default SourceList;
+export default NewsList;
